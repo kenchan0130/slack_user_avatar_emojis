@@ -19,30 +19,8 @@ commands:
           command: |
             git submodule sync
             git submodule update --init
-
-jobs:
-  build:
-    executor:
-      name: python
+  install-python-dependencies:
     steps:
-      - checkout
-      - install-git-submodule
-
-      - run:
-          name: Install python dependencies
-          command: |
-            cd slack-emojinator
-            python -m venv venv
-            . venv/bin/activate
-            pip install -r requirements.txt
-
-  register-emoji:
-    executor:
-      name: python
-    steps:
-      - checkout
-      - install-git-submodule
-
       - run:
           name: Install python dependencies
           command: |
@@ -51,6 +29,23 @@ jobs:
             . venv/bin/activate
             pip install --upgrade pip
             pip install -r requirements.txt
+
+jobs:
+  build:
+    executor:
+      name: python
+    steps:
+      - checkout
+      - install-git-submodule
+      - install-python-dependencies
+
+  register-emoji:
+    executor:
+      name: python
+    steps:
+      - checkout
+      - install-git-submodule
+      - install-python-dependencies
 
       - run:
           name: Execute registring emoji
