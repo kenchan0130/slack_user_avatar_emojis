@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exu
+set -eu
 set -o pipefail
 
 # GENERAL
@@ -78,8 +78,10 @@ function fetch_avatar_image() {
   echo "$users" | while read -r name avatar
   do
     file_name=$(_get_file_name "$name")
-    wget --no-verbose --output-document "$EMOJI_DIR/$file_name.jpg" "$avatar"
-    sleep 0.5
+    file_path="$EMOJI_DIR/$file_name.jpg"
+    echo "Downloading $avatar to $file_path"
+    wget --no-verbose --output-document "$file_path" "$avatar"
+    sleep 1
   done
 }
 
@@ -91,7 +93,7 @@ function replace_avatar() {
     echo "removing $file_name"
     curl -X POST -w '\n' -F "name=$file_name" -F "token=$SLACK_API_TOKEN_FOR_DELETE" "https://${SLACK_TEAM}.slack.com/api/emoji.remove"
     python ./slack-emojinator/upload.py "$EMOJI_DIR/$file_name.jpg"
-    sleep 0.5
+    sleep 1
   done
 }
 
