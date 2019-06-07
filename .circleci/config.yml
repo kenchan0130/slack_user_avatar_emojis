@@ -1,0 +1,72 @@
+version: 2.1
+
+executors:
+  python:
+    working_directory: ~/slack_user_avatar_emojis
+    docker:
+      - image: python:3
+        environment:
+          TZ: "/usr/share/zoneinfo/Asia/Tokyo"
+          LANG: ja_JP.UTF-8
+          LC_ALL: C.UTF-8
+          LANGUAGE: ja_JP.UTF-8
+
+commands:
+  install-git-submodule:
+    steps:
+      - run:
+          name: Install submodule
+          command: |
+            git submodule sync
+            git submodule update --init
+
+jobs:
+  build:
+    executor:
+      name: python
+    steps:
+      - checkout
+      - install-git-submodule
+
+      - run:
+          name: Install python dependencies
+          command: |
+            cd slack-emojinator
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+  register-emoji:
+    executor:
+      name: python
+    steps:
+      - checkout
+      - install-git-submodule
+
+      - run:
+          name: Install python dependencies
+          command: |
+            cd slack-emojinator
+            python -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+      - run:
+          name: Execute registring emoji
+          command: ./run.sh
+
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - build
+  nightly-workflow:
+    triggers:
+      - schedule:
+          cron: "00 00 * * *" # UTC (JST +9)
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - register-emoji
