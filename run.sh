@@ -92,7 +92,7 @@ function replace_avatar() {
     file_name=$(_get_file_name "$name")
     echo "removing $file_name"
     curl -X POST -w '\n' -F "name=$file_name" -F "token=$SLACK_API_TOKEN_FOR_DELETE" "https://${SLACK_TEAM}.slack.com/api/emoji.remove"
-    python ./slack-emojinator/upload.py "$EMOJI_DIR/$file_name.jpg"
+    python ./upload.py "$EMOJI_DIR/$file_name.jpg"
     sleep 1
   done
 }
