@@ -19,6 +19,11 @@ commands:
           command: |
             git submodule sync
             git submodule update --init
+  install-os-dependecies:
+    steps:
+      - run:
+          name: Install libxml
+          command: apt-get install -y libxml2-dev libxslt1-dev
 
 jobs:
   build:
@@ -27,6 +32,7 @@ jobs:
     steps:
       - checkout
       - install-git-submodule
+      - install-os-dependecies
 
       - run:
           name: Install python dependencies
@@ -42,6 +48,7 @@ jobs:
     steps:
       - checkout
       - install-git-submodule
+      - install-os-dependecies
 
       - run:
           name: Install python dependencies
@@ -49,6 +56,7 @@ jobs:
             cd slack-emojinator
             python -m venv venv
             . venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
 
       - run:
