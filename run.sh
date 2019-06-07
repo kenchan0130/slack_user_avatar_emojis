@@ -3,7 +3,24 @@
 set -eu
 set -o pipefail
 
-source .env
+# GENERAL
+## emoji image file directory
+export EMOJI_DIR="avatars"
+
+## include restricted users
+export INCLUDE_RESTRICTED="true"
+
+## filter by user_name, if "*" then all user. else comma separate values(ex: foo,bar,baz)
+export EMOJI_TARGET="*"
+
+## ignore users, by comma separate values(ex: foo,bar,baz)
+export IGNORE_USERS="slackbot"
+
+# split or raw. example. name: fbar => split: "f_bar", raw: "fbar"
+export EMOJI_NAME_TYPE="split"
+
+# slack user profile field name. "name" or "profile_display_name"
+export SLACK_NAME_FIELD="profile.display_name"
 
 function _get_file_name() {
   name="$1"
