@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -exu
 set -o pipefail
 
 # GENERAL
