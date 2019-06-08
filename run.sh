@@ -40,7 +40,7 @@ function _get_file_name() {
 }
 
 function fetch_users() {
-  curl --silent --show-error "https://slack.com/api/users.list?token=$SLACK_API_TOKEN" | jq -r '.members | map(select(.is_bot == false and .deleted == false and (.is_restricted == '"$INCLUDE_RESTRICTED"') and .'"$SLACK_NAME_FIELD"' != "")) | map((.'"$SLACK_NAME_FIELD"'|gsub(" "; "")) + "\t" + .profile.image_72)[]'
+  curl --silent --show-error "https://slack.com/api/users.list?token=$SLACK_API_TOKEN" | jq -r '.members | map(select(.is_bot == false and .deleted == false and .'"$SLACK_NAME_FIELD"' != "")) | map((.'"$SLACK_NAME_FIELD"'|gsub(" "; "")) + "\t" + .profile.image_72)[]'
 }
 
 function filter_users() {
