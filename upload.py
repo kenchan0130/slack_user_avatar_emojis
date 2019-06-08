@@ -90,10 +90,9 @@ def main():
     uploaded = 0
     skipped = 0
     for filename in args.slackmoji_files:
-        base_file_name = os.path.splitext(os.path.basename(filename))[0].lower().replace(".", "")
         emoji_name = '{}{}{}'.format(
             args.prefix.strip(),
-            base_file_name,
+            os.path.splitext(os.path.basename(filename))[0],
             args.suffix.strip()
         )
         print("Processing {} as {}.".format(filename, emoji_name))
