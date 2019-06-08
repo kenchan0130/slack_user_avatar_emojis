@@ -65,7 +65,7 @@ workflows:
   nightly-workflow:
     triggers:
       - schedule:
-          cron: "00 * * * *" # UTC (JST +9)
+          cron: "30 * * * *" # UTC (JST +9)
           filters:
             branches:
               only:
