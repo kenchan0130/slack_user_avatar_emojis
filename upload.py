@@ -24,12 +24,13 @@ URL_LIST = "https://{team_name}.slack.com/api/emoji.adminList"
 def _session(args):
     assert args.cookie, "Cookie required"
     assert args.team_name, "Team name required"
+    assert args.delete_token, "Delete token required"
     session = requests.session()
     session.headers = {'Cookie': args.cookie}
     session.url_customize = URL_CUSTOMIZE.format(team_name=args.team_name)
     session.url_add = URL_ADD.format(team_name=args.team_name)
     session.url_list = URL_LIST.format(team_name=args.team_name)
-    session.api_token = _fetch_api_token(session)
+    session.api_token = args.delete_token
     return session
 
 
@@ -46,6 +47,11 @@ def _argparse():
         '--cookie', '-c',
         default=os.getenv('SLACK_COOKIE'),
         help='Defaults to the $SLACK_COOKIE environment variable.'
+    )
+    parser.add_argument(
+        '--delete-token', '-d',
+        default=os.getenv('SLACK_API_TOKEN_FOR_DELETE'),
+        help='Defaults to the $SLACK_API_TOKEN_FOR_DELETE environment variable.'
     )
     parser.add_argument(
         '--prefix', '-p',
@@ -71,23 +77,9 @@ def _argparse():
         args.team_name = raw_input('Please enter the team name: ').strip()
     if not args.cookie:
         args.cookie = raw_input('Please enter the "emoji" cookie: ').strip()
+    if not args.cookie:
+        args.delete_token = raw_input('Please enter the delete token: ').strip()
     return args
-
-
-def _fetch_api_token(session):
-    # Fetch the form first, to get an api_token.
-    r = session.get(session.url_customize)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
-
-    all_script = soup.findAll("script")
-    for script in all_script:
-        for line in script.text.splitlines():
-            if 'api_token' in line:
-                # api_token: "xoxs-12345-abcdefg....",
-                return re.search(r'"api_token":"(.*?)",', line.strip()).group(1)
-
-    raise Exception('api_token not found. response status={}'.format(r.status_code))
 
 
 def main():
