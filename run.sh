@@ -32,7 +32,7 @@ function _get_file_name() {
     ## replace invalid chars
     echo "${first}_${last}" | tr -d "[:blank:]" | tr "." "_" | tr " " "_" | tr "[:upper:]" "[:lower:]"
   elif [ "$EMOJI_NAME_TYPE" = "raw" ]; then
-    echo "$name" | tr "." "" | tr "[:upper:]" "[:lower:]"
+    echo "$name" | tr -d "." | tr "[:upper:]" "[:lower:]"
   else
     echo "error: unsupported $EMOJI_NAME_TYPE."
     exit 1
