@@ -43,9 +43,6 @@ jobs:
       - install-os-dependencies
       - install-git-submodule
       - install-python-dependencies
-      - run:
-          name: Execute registring emoji
-          command: ./run.sh
 
   register-emoji:
     executor:
