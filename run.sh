@@ -17,7 +17,7 @@ export EMOJI_TARGET="*"
 export IGNORE_USERS="Slackbot"
 
 # split or raw. example. name: fbar => split: "f_bar", raw: "fbar"
-export EMOJI_NAME_TYPE="split"
+export EMOJI_NAME_TYPE="raw"
 
 # slack user profile field name. "name" or "profile_display_name"
 export SLACK_NAME_FIELD="profile.display_name"

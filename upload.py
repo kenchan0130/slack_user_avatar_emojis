@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # Upload files named on ARGV as Slack emoji.
 # https://github.com/smashwilson/slack-emojinator
