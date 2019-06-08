@@ -14,7 +14,7 @@ export INCLUDE_RESTRICTED="true"
 export EMOJI_TARGET="*"
 
 ## ignore users, by comma separate values(ex: foo,bar,baz)
-export IGNORE_USERS="slackbot"
+export IGNORE_USERS="Slackbot"
 
 # split or raw. example. name: fbar => split: "f_bar", raw: "fbar"
 export EMOJI_NAME_TYPE="split"
@@ -40,7 +40,7 @@ function _get_file_name() {
 }
 
 function fetch_users() {
-  curl --silent --show-error "https://slack.com/api/users.list?token=$SLACK_API_TOKEN" | jq -r '.members | map(select(.is_bot == false and .deleted == false and (.is_restricted == false or .is_restricted == '"$INCLUDE_RESTRICTED"') and .'"$SLACK_NAME_FIELD"' != "" and ((.'"$SLACK_NAME_FIELD"'|test("[^\\x01-\\x7E]"))|not) )) | map((.'"$SLACK_NAME_FIELD"'|gsub(" "; "")) + "\t" + .profile.image_72)[]'
+  curl --silent --show-error "https://slack.com/api/users.list?token=$SLACK_API_TOKEN" | jq -r '.members | map(select(.is_bot == false and .deleted == false and (.is_restricted == '"$INCLUDE_RESTRICTED"') and .'"$SLACK_NAME_FIELD"' != "")) | map((.'"$SLACK_NAME_FIELD"'|gsub(" "; "")) + "\t" + .profile.image_72)[]'
 }
 
 function filter_users() {
