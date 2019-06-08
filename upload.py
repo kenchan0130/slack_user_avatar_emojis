@@ -90,12 +90,13 @@ def main():
     uploaded = 0
     skipped = 0
     for filename in args.slackmoji_files:
-        print("Processing {}.".format(filename))
+        base_file_name = os.path.splitext(os.path.basename(filename))[0].lower().decode('utf-8')
         emoji_name = '{}{}{}'.format(
             args.prefix.strip(),
-            os.path.splitext(os.path.basename(filename))[0],
+            base_file_name,
             args.suffix.strip()
         )
+        print("Processing {} as {}.".format(filename, emoji_name))
         if emoji_name in existing_emojis:
             print("Skipping {}. Emoji already exists".format(emoji_name))
             skipped += 1
