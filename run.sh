@@ -30,9 +30,9 @@ function _get_file_name() {
     last=$(echo "$name" | cut -c2-)
 
     ## replace invalid chars
-    echo "${first}_${last}" | tr -d "[:blank:]" | tr "." "_" | tr " " "_" | tr "[:upper:]" "[:lower:]"
+    echo "${first}_${last}" | tr -d "[:blank:]" | tr "." "_" | tr " " "_" | tr "[:upper:]" "[:lower:]" | awk -F/ '{print $1}'
   elif [ "$EMOJI_NAME_TYPE" = "raw" ]; then
-    echo "$name" | tr -d "." | tr "[:upper:]" "[:lower:]"
+    echo "$name" | tr -d "." | tr "[:upper:]" "[:lower:]" | awk -F/ '{print $1}'
   else
     echo "error: unsupported $EMOJI_NAME_TYPE."
     exit 1
