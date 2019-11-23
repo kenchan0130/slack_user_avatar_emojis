@@ -10,6 +10,7 @@ import argparse
 import os
 import re
 import requests
+import time
 
 from bs4 import BeautifulSoup
 
@@ -109,7 +110,12 @@ def main():
 def get_current_emoji_list(session):
     page = 1
     result = []
+    retry_time = None
     while True:
+        if retry_time is not None:
+            time.sleep(retry_time)
+            retry_time = None
+
         data = {
             'query': '',
             'page': page,
@@ -117,6 +123,11 @@ def get_current_emoji_list(session):
             'token': session.api_token
         }
         r = session.post(session.url_list, data=data)
+        retry_after = r.headers['retry-after']
+        if retry_after != "" or retry_after is not None:
+           retry_time = retry_after
+           continue
+
         r.raise_for_status()
         response_json = r.json()
 
