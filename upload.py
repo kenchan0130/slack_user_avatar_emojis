@@ -123,6 +123,7 @@ def get_current_emoji_list(session):
             'token': session.api_token
         }
         r = session.post(session.url_list, data=data)
+        print(r.headers)
         retry_after = r.headers.get('retry-after', "")
         if retry_after != "":
             print("Retry after " + retry_after + "sec...")
