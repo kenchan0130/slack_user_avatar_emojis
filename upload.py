@@ -113,7 +113,7 @@ def get_current_emoji_list(session):
     retry_time = None
     while True:
         if retry_time is not None:
-            time.sleep(retry_time)
+            time.sleep(int(retry_time))
             retry_time = None
 
         data = {
@@ -125,8 +125,9 @@ def get_current_emoji_list(session):
         r = session.post(session.url_list, data=data)
         retry_after = r.headers.get('retry-after', "")
         if retry_after != "":
-           retry_time = retry_after
-           continue
+            print("Retry after " + retry_after + "sec...")
+            retry_time = retry_after
+            continue
 
         r.raise_for_status()
         response_json = r.json()
