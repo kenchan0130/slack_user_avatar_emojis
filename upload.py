@@ -113,7 +113,9 @@ def get_current_emoji_list(session):
     retry_time = None
     while True:
         if retry_time is not None:
-            time.sleep(int(retry_time))
+            # Since it is caught at the limit at the same time as retry seconds, buffer is prepared
+            retry_time_buffer = 3
+            time.sleep(int(retry_time) + retry_time_buffer)
             retry_time = None
 
         data = {
@@ -123,7 +125,6 @@ def get_current_emoji_list(session):
             'token': session.api_token
         }
         r = session.post(session.url_list, data=data)
-        print(r.headers)
         retry_after = r.headers.get('retry-after', "")
         if retry_after != "":
             print("Retry after " + retry_after + "sec...")
